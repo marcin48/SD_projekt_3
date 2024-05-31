@@ -40,12 +40,37 @@ int OpenAdd::hash(int key) {
 
 void OpenAdd::resize() {
     int newCapacity = capacity * 2;
+    int oldCapacity = capacity;
+    capacity = newCapacity;
     Entry** newTable = new Entry * [newCapacity];
     for (int i = 0; i < newCapacity; i++) { // czyszczenie tablicy
         newTable[i] = nullptr;
     }
 
-    for (int i = 0; i < capacity; i++) { // przenoszenie danych ze starej tablicy
+    for (int i = 0; i < oldCapacity; i++) { // przenoszenie danych ze starej tablicy
+        if (table[i] != nullptr) {
+            int index = hash(table[i]->key);
+            while (newTable[index] != nullptr) {
+                index = (index + 1) % newCapacity;
+            }
+            newTable[index] = table[i];
+        }
+    }
+
+    delete[] table;
+    table = newTable;
+    capacity = newCapacity;
+}
+void OpenAdd::resize2() {
+    int newCapacity = capacity/2;
+    int oldCapacity = capacity;
+    capacity = newCapacity;
+    Entry** newTable = new Entry * [newCapacity];
+    for (int i = 0; i < newCapacity; i++) { // czyszczenie tablicy
+        newTable[i] = nullptr;
+    }
+
+    for (int i = 0; i < oldCapacity; i++) { // przenoszenie danych ze starej tablicy
         if (table[i] != nullptr) {
             int index = hash(table[i]->key);
             while (newTable[index] != nullptr) {
@@ -67,7 +92,7 @@ void OpenAdd::insert(int key, int value) {
     }
 
     int index = hash(key);
-    while (table[index] != nullptr && table[index]->key != key) { // szuka dopoki nie znajdzie pustego miejsca, albo takiego samego klucza
+    while (table[index] != nullptr /*0 gdy nullptr*/ && table[index]->key != key) { // szuka dopoki nie znajdzie pustego miejsca, albo takiego samego klucza
         index = (index + 1) % capacity;
     }
     if (table[index] != nullptr && table[index]->key == key) { // zamienia wartoœæ znalezionego klucza na nowa
@@ -79,29 +104,63 @@ void OpenAdd::insert(int key, int value) {
     }
 }
 
-// wyszukiwanie
-int OpenAdd::search(int key) {
-    int index = hash(key);
-    while (table[index] != nullptr && table[index]->key != key) { // szuka odpowiedniego klucza
-        index = (index + 1) % capacity; // (nie moze byc index += index)
-    }
-    if (table[index] != nullptr && table[index]->key == key) { // jesli znajdzie odpowiedni klucz zwraca wartosc
-        return table[index]->value;
-    }
-    return -1; // jesli dojdzie do nullptr i nie znajdzie klucza zwraca -1
-}
-
 // usuwanie
 void OpenAdd::remove(int key) {
-    int index = hash(key);
-    while (table[index] != nullptr && table[index]->key != key) { // szuka pasujacego klucza
-        index = (index + 1) % capacity;
+    if (key == -1)
+        return;
+    int index = hash(key),attempts=0;
+
+    if (table[index] != nullptr) {
+        if (table[index]->key == key) {
+            delete table[index];
+            table[index] = nullptr;
+            size--;
+
+           // cout << endl << "1Delete " << key << " index " << index << endl;
+        }
+        else {
+            while (table[index]->key != key)
+            {
+                index = (index + 1) % capacity;
+                while (table[index] == nullptr) {
+                    index = (index + 1) % capacity;
+                   // cout << index << endl;
+                  //  cout << "szukam bo index table jest puste" << endl;
+                }
+                //cout << index << endl;
+                //cout << "szukam bo klucz sie nie zgadza" << endl;
+            }
+           // cout << endl << "5Usuwam " << key << " o indeksie " << index << endl;
+            delete table[index];
+            table[index] = nullptr;
+            size--;
+        }
     }
-    if (table[index] != nullptr && table[index]->key == key) { // jesli znajdzie pasujacy klucz usuwa dany index 
+    else {
+        while (table[index] == nullptr) {
+            index = (index + 1) % capacity;
+            //cout << index<<endl;
+           // cout << "szukam bo index table jest puste" << endl;
+        }
+
+        while (table[index]->key != key)
+            {
+                index = (index + 1) % capacity;
+                while (table[index] == nullptr) {
+                    index = (index + 1) % capacity;
+                   // cout << index << endl;
+                  //  cout << "szukam bo index table jest puste" << endl;
+                }
+                //cout << index << endl;
+                //cout << "szukam bo klucz sie nie zgadza" << endl;
+            }
+       // cout << endl << "2Usuwam " << key << " o indeksie " << index << endl;
         delete table[index];
         table[index] = nullptr;
         size--;
     }
+    if (getLoadFactor() < 0.25)
+        resize2();
 }
 
 // gettersy
@@ -116,8 +175,8 @@ double OpenAdd::getLoadFactor() const{
 void OpenAdd::display() {
     for (int i = 0; i < capacity; i++) {
         if (table[i] != nullptr) {
-            //cout << capacity<<" "<< getLoadFactor()<<" "<< getRandomKey()<< "  ";
-            cout << "Key: " << table[i]->key <<", Hash: "<<hash(table[i]->key)<< ", Value: " << table[i]->value << endl;
+            cout << capacity << " " << getLoadFactor()<<" "<<getSize();
+            cout << " Key: " << table[i]->key <<", Hash: "<<hash(table[i]->key)<< ", Index: "<<i<< ", Value: " << table[i]->value << endl;
         }
     }
 }
@@ -128,15 +187,21 @@ int OpenAdd::getRandomKey() {
         return -1;
     }
 
-    random_device rd; 
-    mt19937 gen(rd()); 
-    uniform_int_distribution<> dis(0, capacity - 1); // zakres losowania 0 - capacity-1
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dis(0, capacity - 1);
 
-    int randomIndex = dis(gen);
+    int attempts = 0;
+    int randomIndex;
 
-    while (table[randomIndex] == nullptr) {
-        randomIndex = (randomIndex + 1) % capacity;
-    }
+    do {
+        randomIndex = dis(gen);
+        attempts++;
+        if (attempts > 10*capacity) {
+            return -1;
+        }
+    } while (table[randomIndex] == nullptr);
 
+    //cout << "Random key selected: " << table[randomIndex]->key << " at index " << randomIndex << endl;
     return table[randomIndex]->key;
 }

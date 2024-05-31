@@ -12,6 +12,7 @@ private:
     int size;
 
     void resize();
+    void resize2();
     int hash(int key);
 
 public:
@@ -19,7 +20,6 @@ public:
     ~OpenAdd();
     OpenAdd(const OpenAdd& other);
     void insert(int key, int value);
-    int search(int key);
     void remove(int key);
     int getSize() const;
     double getLoadFactor() const;

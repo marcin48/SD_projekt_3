@@ -31,7 +31,7 @@ void run() {
     int choice = 0;
     OpenAdd openadd(10);
     Cuckoo cuckoo(10);
-    Dictionary* dictionary{};
+    Dictionary* dictionary = nullptr;
     cout << "Choose hash table:" << endl;
     cout << "1. Open Addresing" << endl;
     cout << "2. XXXXXXXXXXXXXXXXXXX" << endl;
@@ -40,37 +40,36 @@ void run() {
     cin >> choice;
     system("cls");
     switch (choice) {
-    case 1: {
+    case 1:
         dictionary = &openadd;
         break;
-    }
-    case 2: {
-        
+    case 2:
         break;
-    }
-    case 3: {
+    case 3:
         dictionary = &cuckoo;
         break;
-    }
-
+    default:
+        cout << "Invalid choice!" << endl;
+        return;
     }
 
     int n = 0;
+    int x = 0;
     cout << "How many records do you want to load? ";
     cin >> n;
-    
+
     load("1mln_2.txt", dictionary, n);
-    dictionary->display();
+   // dictionary->display();
+    cout << dictionary->getSize();
 
     cout << endl << endl << "How many do you want to remove? ";
     cin >> n;
     for (int i = 0; i < n; i++) {
         dictionary->remove(dictionary->getRandomKey());
     }
-    system("cls");
+   // system("cls");
     cout << "After removing: \n";
     dictionary->display();
-
 }
 
 void generate_values(int count, const string& filename) {
@@ -96,22 +95,22 @@ void generate_values(int count, const string& filename) {
 int main(){
     //generate_values(1000000, "1mln_3.txt");
     run();
- /*   long int czas = 0;
-    OpenAdd openadd(10);
-    Cuckoo cuckoo(10);
-    Dictionary* dictionary{};
-    dictionary = &openadd;
-    int n = 1000000;
-    chrono::time_point<chrono::steady_clock> t1, t2;
-    load("1mln_2.txt",dictionary,n);*/
-    
+    //long int czas = 0;
+    //OpenAdd openadd(10);
+    //Cuckoo cuckoo(10);
+    //Dictionary* dictionary{};
+    //dictionary = &openadd;
+    //int n = 100;
+    //chrono::time_point<chrono::steady_clock> t1, t2;
+    //load("1mln_2.txt",dictionary,n);
+    //
 
-    /*srand(time(nullptr));
-    t1 = chrono::steady_clock::now();
-    dictionary->remove(dictionary->getRandomKey());
-    t2 = chrono::steady_clock::now();
-    czas = chrono::duration_cast<chrono::nanoseconds>(t2 - t1).count();
-    cout << czas<<endl;*/
+    //srand(time(nullptr));
+    //t1 = chrono::steady_clock::now();
+    //dictionary->remove(dictionary->getRandomKey());
+    //t2 = chrono::steady_clock::now();
+    //czas = chrono::duration_cast<chrono::milliseconds>(t2 - t1).count();
+    //cout << czas<<endl;
   /*  srand(time(nullptr));
     t1 = chrono::steady_clock::now();
     dictionary->insert(rand() % INT_MAX + 1,1000);
