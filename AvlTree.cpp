@@ -24,14 +24,15 @@ int Bucket::height(Node* node) {
 }
 
 void Bucket::updateHeight(Node* node) {
-	node->height = max(node->left->height, node->right->height) + 1;
+	node->height = max(node->left->height, node->right->height) + 1; //wysokość danego węzła to max(lewy, prawy)+1
 }
 
 Node* Bucket::insertNode(Node* node, int key, int value) {
 	if (node == nullptr) {
-		return new Node(new Entry(key, value));
+		return new Node(new Entry(key, value)); //jak nie ma żadnego węzła to tworzymy nowy
 	}
 
+	//Operacje dodawania el do kopca. Porównujemy wartość klucza. Małe wartości na lewo większe na prawo
 	if (key < node->entry->key) {
 		node->left = insertNode(node->left, key, value);
 	}
@@ -47,11 +48,11 @@ Node* Bucket::insertNode(Node* node, int key, int value) {
 }
 
 Node* Bucket::balance(Node* node) {
-	if (height(node->left) - height(node->right) > 1) { //oznacza �e lewa strona jest ci�sza, rotacja w prawo
+	if (height(node->left) - height(node->right) > 1) { //oznacza ¿e lewa strona jest ciê¿sza, rotacja w prawo
 		return rotateRight(node);
 	}
 
-	if (height(node->right) - height(node->left) > 1) { //oznacza �e prawa strona jest ci�sza, rotacja w lewo
+	if (height(node->right) - height(node->left) > 1) { //oznacza ¿e prawa strona jest ciê¿sza, rotacja w lewo
 		return rotateLeft(node);
 	}
 }
