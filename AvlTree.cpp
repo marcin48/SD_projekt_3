@@ -3,6 +3,9 @@
 #include"Entry.h"
 
 #include <iomanip>
+#include<functional>
+#include<vector>
+#include <random>
 #include<iostream>
 
 using namespace std;
@@ -160,8 +163,36 @@ Node* Bucket::findMin(Node* node) {
 
 
 
+//Funkcje stworzeone na potrzeby badañ i wizualizacji nie maja one bezpoœrednio wp³ywu na wyniki badañ 
+// u¿yte zosta³y tu struktury takie jak vector ale nie wp³ywa to na badania 
+// implementacja badanych struktur jest w³asna bez korzystanai z gotowych pomocy
 
+int Bucket::getRandomKeyFromBucket() {
+	if (bst == nullptr) {
+		return -1;  // Brak elementów w Buckecie
+	}
 
+	vector<int> keys;
+	function<void(Node*)> collectKeys = [&](Node* node) {
+		if (node != nullptr) {
+			collectKeys(node->left);
+			keys.push_back(node->entry->key);
+			collectKeys(node->right);
+		}
+		};
+
+	collectKeys(bst);
+
+	if (keys.empty()) {
+		return -1;
+	}
+
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<> dis(0, keys.size() - 1);
+
+	return keys[dis(gen)];
+}
 
 void Bucket::printTree(Node* node, int level) {
 	if (node != nullptr) {
@@ -171,7 +202,6 @@ void Bucket::printTree(Node* node, int level) {
 		printTree(node->left, level + 1);
 	}
 }
-
 
 void Bucket::printBucketTree(Bucket* bucket) {
 	cout << "AVL Tree in Bucket" << endl;

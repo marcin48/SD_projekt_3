@@ -1,6 +1,7 @@
 #pragma once
 #include<iostream>
 #include <iomanip>
+#include <random>
 #include"Entry.h"
 #include"Node.h"
 
@@ -12,6 +13,12 @@ private:
 public:
 	Bucket() : bst(nullptr), size(0) {}
 	~Bucket() {}
+	// Konstruktor kopiuj¹cy
+	Bucket(const Bucket& other) : bst(nullptr), size(other.size) {
+		if (other.bst) {
+			bst = new Node(*other.bst);
+		}
+	}
 	
 	void insert(int key, int value);
 	void remove(int key);
@@ -30,5 +37,10 @@ public:
 
 	void printTree(Node* node, int level = 0);
 	void printBucketTree(Bucket* bucket);
+
+	Node* getRoot() const { return bst; } // Funkcja getter dla korzenia BST
+
+
+	int getRandomKeyFromBucket();
 
 };

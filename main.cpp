@@ -10,18 +10,38 @@
 
 void driver() {
 
-    ClosedAdd tree(40);
+    int s = 40;
+    ClosedAdd tree(s);
     int key = 0, value = 0;
     srand(time(NULL));
 
-    for (int i = 0; i < 40; i++) {
+    for (int i = 0; i < s; i++) {
         key = rand() % 200;
         value = rand() % 150;
         tree.insert(key, value);
     }
     tree.display();
-    // Przyjmuj¹c, ¿e chcesz wydrukowaæ drzewo w pierwszym buckecie
-    Bucket* firstBucket = tree.getBucket(0); // Pobranie pierwszego bucketa
+
+    // Losowanie klucza z tablicy
+    int randomKey = tree.getRandomKey();
+    if (randomKey != -1) {
+        cout << "Random key selected: " << randomKey << endl;
+    }
+    else {
+        cout << "No key found or too many attempts." << endl;
+    }
+    // Przyjmuj¹c, ¿e chcesz wydrukowaæ drzewo w pierwszym buckecie 
+
+    int n;
+    do {
+        cout << "Call bucket at number (0 - " << s << ") :";
+        cin >> n;
+        
+    } while (n<0 && n>s);
+
+    cout << endl;
+
+    Bucket* firstBucket = tree.getBucket(n); // Pobranie pierwszego bucketa
     if (firstBucket != nullptr) {
         firstBucket->printBucketTree(firstBucket); // Wywo³anie printBucketTree dla pierwszego bucketa
     }
@@ -58,13 +78,31 @@ void driver_2() {
     }
 }
 
+void test() {
+    ClosedAdd table(10);
+
+    for (int i = 0; i < 200; i += 5) {
+        table.insert(i, i + 9);
+    }
+
+    table.display();
+
+    Bucket* firstBucket = table.getBucket(5); // Pobranie pierwszego bucketa
+    if (firstBucket != nullptr) {
+        firstBucket->printBucketTree(firstBucket); // Wywo³anie printBucketTree dla pierwszego bucketa
+    }
+    else {
+        std::cout << "Bucket is empty" << std::endl;
+    }
+}
+
 using namespace std;
 
 int main() {
 
-   // driver_2();
-    //driver;
-   
+    //driver_2();
+    //driver();
+    test();
    
 
 	return 0;
