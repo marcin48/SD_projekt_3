@@ -1,4 +1,4 @@
-#include"AvlTree.h"
+ï»¿#include"AvlTree.h"
 #include"Node.h"
 #include"Entry.h"
 #include"ClosedAdd.h"
@@ -23,7 +23,7 @@ ClosedAdd::~ClosedAdd() {
 
 int ClosedAdd::hash(int key) const {
 	return key % size;
-	
+
 }
 
 double ClosedAdd::loadFactor() const {
@@ -55,7 +55,7 @@ void ClosedAdd::display() {
 }
 
 Bucket* ClosedAdd::getBucket(int index) {
-	if (index >= 0 && index < size && buckets[index]!=nullptr) {
+	if (index >= 0 && index < size && buckets[index] != nullptr) {
 		return buckets[index];
 	}
 	else {
@@ -81,10 +81,10 @@ void ClosedAdd::rehash() {
 			}
 			};
 		rehashNode(current);
-		delete buckets[i]; // Usuniêcie starych kube³ków
+		delete buckets[i]; // Usuniï¿½cie starych kubeï¿½kï¿½w
 	}
 
-	delete[] buckets; // Usuniêcie starej tablicy kube³ków
+	delete[] buckets; // Usuniï¿½cie starej tablicy kubeï¿½kï¿½w
 
 	buckets = newBuckets;
 	size = newSize;
@@ -98,7 +98,7 @@ void ClosedAdd::rehash() {
 
 int ClosedAdd::getRandomKey() {
 	if (elementCounter == 0) {
-		return -1;  // Brak elementów w tablicy
+		return -1;  // Brak elementï¿½w w tablicy
 	}
 
 	std::random_device rd;

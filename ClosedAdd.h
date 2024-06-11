@@ -1,9 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include"Entry.h"
 #include"Node.h"
 #include"AvlTree.h"
+#include"Dictionary.h"
 
-class ClosedAdd {
+class ClosedAdd : public Dictionary
+{
 private:
 	int size;
 	int elementCounter;
@@ -13,7 +15,7 @@ public:
 	ClosedAdd(int size);
 	~ClosedAdd();
 
-	// Konstruktor kopiuj¹cy
+	// Konstruktor kopiujï¿½cy
 	ClosedAdd(const ClosedAdd& other) : size(other.size), elementCounter(other.elementCounter) {
 		buckets = new Bucket * [size];
 		for (int i = 0; i < size; ++i) {

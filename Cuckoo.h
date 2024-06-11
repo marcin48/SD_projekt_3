@@ -23,6 +23,7 @@ private:
     void rehash();
 public:
     Cuckoo(int initialCapacity);
+    Cuckoo(const Cuckoo& other);
     ~Cuckoo();
 
     void insert(int key, int value);

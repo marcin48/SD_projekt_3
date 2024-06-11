@@ -6,6 +6,6 @@ public:
     virtual void remove(int key)=0;
     virtual int getRandomKey() = 0;
     virtual void display()=0;
-    virtual int getSize() const=0;
+    //virtual int getSize() const=0;
 };
 

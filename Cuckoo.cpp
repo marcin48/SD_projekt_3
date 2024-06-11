@@ -14,6 +14,31 @@ Cuckoo::Cuckoo(int initialCapacity) {
     }
 }
 
+Cuckoo::Cuckoo(const Cuckoo& other) {
+    capacity = other.capacity;
+    size = other.size;
+    cycle = other.cycle;
+
+    table1 = new Entry * [capacity];
+    table2 = new Entry * [capacity];
+
+    for (int i = 0; i < capacity; i++) {
+        if (other.table1[i] != nullptr) {
+            table1[i] = new Entry(other.table1[i]->key, other.table1[i]->value);
+        }
+        else {
+            table1[i] = nullptr;
+        }
+
+        if (other.table2[i] != nullptr) {
+            table2[i] = new Entry(other.table2[i]->key, other.table2[i]->value);
+        }
+        else {
+            table2[i] = nullptr;
+        }
+    }
+}
+
 Cuckoo::~Cuckoo() {
     delete[] table1;
     delete[] table2;

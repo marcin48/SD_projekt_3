@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<iostream>
 #include <iomanip>
 #include <random>
@@ -13,13 +13,13 @@ private:
 public:
 	Bucket() : bst(nullptr), size(0) {}
 	~Bucket() {}
-	// Konstruktor kopiuj¹cy
+	// Konstruktor kopiujï¿½cy
 	Bucket(const Bucket& other) : bst(nullptr), size(other.size) {
 		if (other.bst) {
 			bst = new Node(*other.bst);
 		}
 	}
-	
+
 	void insert(int key, int value);
 	void remove(int key);
 	int height(Node* node);

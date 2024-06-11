@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include<iostream>
 #include"Entry.h"
 
@@ -6,15 +6,15 @@ using namespace std;
 
 class Node {
 public:
-	Entry* entry;
-	Node* right;
-	Node* left;
-	int height;
+    Entry* entry;
+    Node* right;
+    Node* left;
+    int height;
 
-	Node(Entry* e) : entry(e), left(nullptr), right(nullptr), height(1) {}
-	~Node() {}
+    Node(Entry* e) : entry(e), left(nullptr), right(nullptr), height(1) {}
+    ~Node() {}
 
-    // Konstruktor kopiuj¹cy
+    // Konstruktor kopiujï¿½cy
     Node(const Node& other) : entry(new Entry(*other.entry)), right(nullptr), left(nullptr), height(other.height) {
         if (other.left) {
             left = new Node(*other.left);
@@ -24,7 +24,7 @@ public:
         }
     }
 
-  //Funkcja pomocnicza do wizualizacji
+    //Funkcja pomocnicza do wizualizacji
     void printInOrder() {
         if (left != nullptr) {
             left->printInOrder();
