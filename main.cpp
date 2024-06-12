@@ -81,7 +81,7 @@ void driver_2() {
 void test() {
     ClosedAdd table(10);
 
-    for (int i = 0; i < 200; i += 5) {
+    for (int i = 0; i < 2000; i += 5) {
         table.insert(i, i + 9);
     }
 
@@ -102,6 +102,7 @@ int main() {
 
     //driver_2();
     //driver();
+    
     test();
    
 

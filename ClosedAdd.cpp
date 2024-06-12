@@ -1,4 +1,4 @@
-ï»¿#include"AvlTree.h"
+#include"AvlTree.h"
 #include"Node.h"
 #include"Entry.h"
 #include"ClosedAdd.h"
@@ -23,9 +23,10 @@ ClosedAdd::~ClosedAdd() {
 
 int ClosedAdd::hash(int key) const {
 	return key % size;
-
+	
 }
 
+//wskaŸnika zape³nienia tablicy
 double ClosedAdd::loadFactor() const {
 	return static_cast<double>(elementCounter) / size;
 }
@@ -46,6 +47,7 @@ void ClosedAdd::remove(int key) {
 	elementCounter--;
 }
 
+//funkacja na potrzeby wizualizacji i testów
 void ClosedAdd::display() {
 	for (int i = 0; i < size; i++) {
 		cout << "Bucket " << i << ": ";
@@ -54,8 +56,9 @@ void ClosedAdd::display() {
 	}
 }
 
+//funcja do pobierania ca³ego kube³ka
 Bucket* ClosedAdd::getBucket(int index) {
-	if (index >= 0 && index < size && buckets[index] != nullptr) {
+	if (index >= 0 && index < size && buckets[index]!=nullptr) {
 		return buckets[index];
 	}
 	else {
@@ -64,12 +67,15 @@ Bucket* ClosedAdd::getBucket(int index) {
 }
 
 void ClosedAdd::rehash() {
+
+	//tworzenia nowej tablicy
 	int newSize = size * 2;
 	Bucket** newBuckets = new Bucket * [newSize];
 	for (int i = 0; i < newSize; i++) {
 		newBuckets[i] = new Bucket();
 	}
 
+	//przepisanie starej zawartoœci z ponownym haszowaniem
 	for (int i = 0; i < size; i++) {
 		Node* current = buckets[i]->getRoot();
 		std::function<void(Node*)> rehashNode = [&](Node* node) {
@@ -81,10 +87,10 @@ void ClosedAdd::rehash() {
 			}
 			};
 		rehashNode(current);
-		delete buckets[i]; // Usuniï¿½cie starych kubeï¿½kï¿½w
+		delete buckets[i]; // Usuniêcie starych kube³ków
 	}
 
-	delete[] buckets; // Usuniï¿½cie starej tablicy kubeï¿½kï¿½w
+	delete[] buckets; // Usuniêcie starej tablicy kube³ków
 
 	buckets = newBuckets;
 	size = newSize;
@@ -98,15 +104,17 @@ void ClosedAdd::rehash() {
 
 int ClosedAdd::getRandomKey() {
 	if (elementCounter == 0) {
-		return -1;  // Brak elementï¿½w w tablicy
+		return -1;  // Brak elementów w tablicy
 	}
 
+	//generowanie randomowego idneksu
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> bucketDis(0, size - 1);
 
 	int randomIndex;
 
+	//je¿eli kube³ke z indeksem jest pusty -> ponowne generowanie id
 	do {
 		randomIndex = bucketDis(gen);
 	} while (buckets[randomIndex]->getRandomKeyFromBucket() == -1);

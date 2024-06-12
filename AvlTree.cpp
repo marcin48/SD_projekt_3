@@ -1,4 +1,4 @@
-ï»¿#include"AvlTree.h"
+#include"AvlTree.h"
 #include"Node.h"
 #include"Entry.h"
 
@@ -44,15 +44,16 @@ Node* Bucket::insertNode(Node* node, int key, int value) {
 	if (node == nullptr) {
 		return new Node(new Entry(key, value));
 	}
-
+	//wartoœci mniejsze od na lewo wiêksze na prawo -> struktura drzewa
 	if (key < node->entry->key) {
 		node->left = insertNode(node->left, key, value);
 	}
-	else if (key > node->entry->key) {
+	else if(key>node->entry->key){
 		node->right = insertNode(node->right, key, value);
 	}
 	else {
-		node->entry->value = value;
+		
+		node->entry->value = value;//taki sam klucz -> zastêpujemy wartoœæ now¹
 	}
 
 	updateHeight(node);
@@ -60,7 +61,7 @@ Node* Bucket::insertNode(Node* node, int key, int value) {
 }
 
 Node* Bucket::balance(Node* node) {
-	if (height(node->left) - height(node->right) > 1) { //oznacza ï¿½e lewa strona jest ciï¿½sza, rotacja w prawo
+	if (height(node->left) - height(node->right) > 1) { //oznacza ¿e lewa strona jest ciê¿sza, rotacja w prawo
 
 		if (height(node->left->left) >= height(node->left->right)) {
 
@@ -68,31 +69,30 @@ Node* Bucket::balance(Node* node) {
 		}
 		else {
 
-			node->left = rotateLeft(node->left);
+			node->left = rotateLeft(node->left); // lewa strona jest ciê¿sza ale ma ciêzsz¹ swoj¹ praw¹ odnogê left->right
 			return rotateRight(node);
 		}
-
+		
 	}
 
-	if (height(node->right) - height(node->left) > 1) { //oznacza ï¿½e prawa strona jest ciï¿½sza, rotacja w lewo
+	if (height(node->right) - height(node->left) > 1) { //oznacza ¿e prawa strona jest ciê¿sza, rotacja w lewo
 
 		if (height(node->right->right) >= height(node->right->left)) {
 
 			return rotateLeft(node);
 
-		}
-		else {
+		}else {
 
-			node->right = rotateRight(node->right);
+			node->right = rotateRight(node->right);// prawa strona jest ciê¿sza ale ma ciêzsz¹ swoj¹ lew¹ odnogê right->left
 			return rotateLeft(node);
 		}
-
+		
 	}
 	return node;
 }
 
 Node* Bucket::rotateRight(Node* node) {
-
+	
 	Node* pivot = node->left;
 	node->left = pivot->right;
 	pivot->right = node;
@@ -104,7 +104,7 @@ Node* Bucket::rotateRight(Node* node) {
 }
 
 Node* Bucket::rotateLeft(Node* node) {
-
+	
 	Node* pivot = node->right;
 	node->right = pivot->left;
 	pivot->left = node;
@@ -120,6 +120,7 @@ Node* Bucket::removeNode(Node* node, int key) {
 		return nullptr;
 	}
 
+	//szukamy pozycji klucza
 	if (key < node->entry->key) {
 		node->left = removeNode(node->left, key);
 	}
@@ -127,6 +128,8 @@ Node* Bucket::removeNode(Node* node, int key) {
 		node->right = removeNode(node->right, key);
 	}
 	else {
+
+		//gdzy znajdzeimy pozycje klucza
 		if (node->left == nullptr && node->right == nullptr) {
 			delete node;
 			return nullptr;
@@ -136,7 +139,7 @@ Node* Bucket::removeNode(Node* node, int key) {
 			delete node;
 			return tmp;
 		}
-
+		
 		else if (node->right == nullptr) {
 			Node* tmp = node->left;
 			delete node;
@@ -148,7 +151,7 @@ Node* Bucket::removeNode(Node* node, int key) {
 			node->right = removeNode(node->right, tmp->entry->key);
 
 		}
-
+		
 	}
 	updateHeight(node);
 	return balance(node);
@@ -156,7 +159,7 @@ Node* Bucket::removeNode(Node* node, int key) {
 
 Node* Bucket::findMin(Node* node) {
 	while (node->left != nullptr) {
-		node = node->left;
+		node = node->left;	//minimalna wartoœæ jest pierwsza z lewej
 	}
 	return node;
 }
@@ -164,13 +167,13 @@ Node* Bucket::findMin(Node* node) {
 
 
 
-//Funkcje stworzeone na potrzeby badaï¿½ i wizualizacji nie maja one bezpoï¿½rednio wpï¿½ywu na wyniki badaï¿½ 
-// uï¿½yte zostaï¿½y tu struktury takie jak vector ale nie wpï¿½ywa to na badania 
-// implementacja badanych struktur jest wï¿½asna bez korzystanai z gotowych pomocy
+//Funkcje stworzeone na potrzeby badañ i wizualizacji nie maja one bezpoœrednio wp³ywu na wyniki badañ 
+// u¿yte zosta³y tu struktury takie jak vector ale nie wp³ywa to na badania 
+// implementacja badanych struktur jest w³asna bez korzystanai z gotowych pomocy
 
 int Bucket::getRandomKeyFromBucket() {
 	if (bst == nullptr) {
-		return -1;  // Brak elementï¿½w w Buckecie
+		return -1;  // Brak elementów w Buckecie
 	}
 
 	vector<int> keys;
@@ -198,8 +201,8 @@ int Bucket::getRandomKeyFromBucket() {
 void Bucket::printTree(Node* node, int level) {
 	if (node != nullptr) {
 		printTree(node->right, level + 1);
-		cout << setw(4 * level) << ""; // Wciï¿½cie poziome
-		cout << "(" << node->entry->key << ", " << node->entry->value << ")" << endl; // Wyï¿½wietlenie pary klucz-wartoï¿½ï¿½
+		cout << setw(4 * level) << ""; // Wciêcie poziome
+		cout << "(" << node->entry->key << ", " << node->entry->value << ")" << endl; // Wyœwietlenie pary klucz-wartoœæ
 		printTree(node->left, level + 1);
 	}
 }

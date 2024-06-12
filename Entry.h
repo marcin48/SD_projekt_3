@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 class Entry {
 public:
     int key;
@@ -6,7 +6,6 @@ public:
 
     Entry(int k, int v) : key(k), value(v) {}
 
-    // Konstruktor kopiuj¹cy
+    // Konstruktor kopiuj�cy
     Entry(const Entry& other) : key(other.key), value(other.value) {}
 };
-
