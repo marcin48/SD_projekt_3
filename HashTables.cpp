@@ -97,8 +97,8 @@ void generate_values(int count, const string& filename) {
 
 int main(){
     //generate_values(1000000, "1mln_3.txt");
-    //run();
-    Dictionary* dictionary{};
+    run();
+   // Dictionary* dictionary{};
     /*long int czas = 0;
     OpenAdd openadd(10);
     Cuckoo cuckoo(10);
@@ -112,100 +112,100 @@ int main(){
 
     //BADANIA
 
-    int final_time1[15], final_time2[15], final_time3[15];
+    //int final_time1[15], final_time2[15], final_time3[15];
 
-    for (int x = 20000; x <= 200000; x = x + 20000) {
-        ClosedAdd openadd1(10), openadd2(10), openadd3(10);
-        dictionary = &openadd1;
-        load("1mln_1.txt", dictionary, x);
-        dictionary = &openadd2;
-        load("1mln_2.txt", dictionary, x);
-        dictionary = &openadd3;
-        load("1mln_3.txt", dictionary, x);
-        chrono::time_point<chrono::steady_clock> t1, t2;
-        double czasy1[10], czasy2[10], czasy3[10];
-        double czas1 = 0, czas2 = 0, czas3 = 0;
+    //for (int x = 20000; x <= 200000; x = x + 20000) {
+    //    ClosedAdd openadd1(10), openadd2(10), openadd3(10);
+    //    dictionary = &openadd1;
+    //    load("1mln_1.txt", dictionary, x);
+    //    dictionary = &openadd2;
+    //    load("1mln_2.txt", dictionary, x);
+    //    dictionary = &openadd3;
+    //    load("1mln_3.txt", dictionary, x);
+    //    chrono::time_point<chrono::steady_clock> t1, t2;
+    //    double czasy1[10], czasy2[10], czasy3[10];
+    //    double czas1 = 0, czas2 = 0, czas3 = 0;
 
-        for (int i = 0; i < 10; i++)
-        {
-            ClosedAdd* copy = new ClosedAdd(openadd1);
-            dictionary = copy;
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        ClosedAdd* copy = new ClosedAdd(openadd1);
+    //        dictionary = copy;
 
-            random_device rd;
-            mt19937 gen(rd());
-            uniform_int_distribution<> dis(0, INT_MAX);
-           // int key = dictionary->getRandomKey();
-            srand(time(nullptr));
-            t1 = chrono::steady_clock::now();
-            dictionary->insert(dis(gen), dis(gen));
-            t2 = chrono::steady_clock::now();
-            czasy1[i] = chrono::duration_cast<chrono::nanoseconds>(t2 - t1).count()/10;
-            czas1 = czas1 + czasy1[i];
-            delete copy;
-            
-        }
+    //        random_device rd;
+    //        mt19937 gen(rd());
+    //        uniform_int_distribution<> dis(0, INT_MAX);
+    //       // int key = dictionary->getRandomKey();
+    //        srand(time(nullptr));
+    //        t1 = chrono::steady_clock::now();
+    //        dictionary->insert(dis(gen), dis(gen));
+    //        t2 = chrono::steady_clock::now();
+    //        czasy1[i] = chrono::duration_cast<chrono::nanoseconds>(t2 - t1).count()/10;
+    //        czas1 = czas1 + czasy1[i];
+    //        delete copy;
+    //        
+    //    }
 
-        for (int i = 0; i < 10; i++)
-        {
-            ClosedAdd* copy = new ClosedAdd(openadd2);
-            dictionary = copy;
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        ClosedAdd* copy = new ClosedAdd(openadd2);
+    //        dictionary = copy;
 
-            random_device rd;
-            mt19937 gen(rd());
-            uniform_int_distribution<> dis(0, INT_MAX);
-            //int key = dictionary->getRandomKey();
-            srand(time(nullptr));
-            t1 = chrono::steady_clock::now();
-            dictionary->insert(dis(gen), dis(gen));
-            t2 = chrono::steady_clock::now();
-            czasy2[i] = chrono::duration_cast<chrono::nanoseconds>(t2 - t1).count() / 10;
-            czas2 = czas2 + czasy2[i];
-            delete copy;
+    //        random_device rd;
+    //        mt19937 gen(rd());
+    //        uniform_int_distribution<> dis(0, INT_MAX);
+    //        //int key = dictionary->getRandomKey();
+    //        srand(time(nullptr));
+    //        t1 = chrono::steady_clock::now();
+    //        dictionary->insert(dis(gen), dis(gen));
+    //        t2 = chrono::steady_clock::now();
+    //        czasy2[i] = chrono::duration_cast<chrono::nanoseconds>(t2 - t1).count() / 10;
+    //        czas2 = czas2 + czasy2[i];
+    //        delete copy;
 
-        }
-        for (int i = 0; i < 10; i++)
-        {
-            ClosedAdd* copy = new ClosedAdd(openadd3);
-            dictionary = copy;
+    //    }
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        ClosedAdd* copy = new ClosedAdd(openadd3);
+    //        dictionary = copy;
 
-            random_device rd;
-            mt19937 gen(rd());
-            uniform_int_distribution<> dis(0, INT_MAX);
-           // int key = dictionary->getRandomKey();
-            srand(time(nullptr));
-            t1 = chrono::steady_clock::now();
-            dictionary->insert(dis(gen), dis(gen));
-            t2 = chrono::steady_clock::now();
-            czasy3[i] = chrono::duration_cast<chrono::nanoseconds>(t2 - t1).count() / 10;
-            czas3 = czas3 + czasy3[i];
-            delete copy;
+    //        random_device rd;
+    //        mt19937 gen(rd());
+    //        uniform_int_distribution<> dis(0, INT_MAX);
+    //       // int key = dictionary->getRandomKey();
+    //        srand(time(nullptr));
+    //        t1 = chrono::steady_clock::now();
+    //        dictionary->insert(dis(gen), dis(gen));
+    //        t2 = chrono::steady_clock::now();
+    //        czasy3[i] = chrono::duration_cast<chrono::nanoseconds>(t2 - t1).count() / 10;
+    //        czas3 = czas3 + czasy3[i];
+    //        delete copy;
 
-        }
+    //    }
 
-        final_time1[(x / 20000) - 1] = czas1;
-        final_time2[(x / 20000) - 1] = czas2;
-        final_time3[(x / 20000) - 1] = czas3;
+    //    final_time1[(x / 20000) - 1] = czas1;
+    //    final_time2[(x / 20000) - 1] = czas2;
+    //    final_time3[(x / 20000) - 1] = czas3;
 
-        cout << "Iteracja: " << x / 20000 << endl;
+    //    cout << "Iteracja: " << x / 20000 << endl;
 
-    }
-    
-    cout << endl << "Plik 1\n";
-    for (int i = 0; i < 10; i++)
-    {
-        cout << final_time1[i] << endl;
-    }
-    cout << endl << "Plik 2\n";
+    //}
+    //
+    //cout << endl << "Plik 1\n";
+    //for (int i = 0; i < 10; i++)
+    //{
+    //    cout << final_time1[i] << endl;
+    //}
+    //cout << endl << "Plik 2\n";
 
-    for (int i = 0; i < 10; i++)
-    {
-        cout << final_time2[i] << endl;
-    }
-    cout << endl << "Plik 3\n";
-    for (int i = 0; i < 10; i++)
-    {
-        cout << final_time3[i] << endl;
-    }
+    //for (int i = 0; i < 10; i++)
+    //{
+    //    cout << final_time2[i] << endl;
+    //}
+    //cout << endl << "Plik 3\n";
+    //for (int i = 0; i < 10; i++)
+    //{
+    //    cout << final_time3[i] << endl;
+    //}
 
     
 
